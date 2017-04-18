@@ -1,0 +1,2 @@
+defmodule WechatBase do
+end

@@ -1,8 +1,8 @@
-defmodule WechatMP.Mixfile do
+defmodule WechatBase.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :wechat_mp,
+    [app: :wechat_base,
      version: "0.1.0",
      build_path: "../../_build",
      config_path: "../../config/config.exs",
@@ -18,7 +18,7 @@ defmodule WechatMP.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :maxwell]]
+    [applications: [:logger]]
   end
 
   # Dependencies can be Hex packages:
@@ -35,7 +35,6 @@ defmodule WechatMP.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:maxwell, "~> 2.2.0"},
-     {:wechat_base, in_umbrella: true}]
+    []
   end
 end
