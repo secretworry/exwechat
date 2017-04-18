@@ -4,15 +4,19 @@ defmodule WechatMP.Api do
   namespace :users do
     get :get do
       path "cgi-bin/user/info"
-      arg :access_token, required(:string)
-      arg :openid, required(:string)
-      arg :lang, :string
+      args do
+        required :access_token
+        required :openid
+        optional :lang
+      end
       response WechatMP.Api.Model.User
     end
 
     post :batch_get do
       path "cgi-bin/user/info/batchget"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
 
       body :json do
         array :user_list do
@@ -26,14 +30,18 @@ defmodule WechatMP.Api do
 
     get :list do
       path "cgi-bin/user/get"
-      arg :access_token, required(:string)
-      arg :next_openid, :string
+      args do
+        required :access_token
+        optional :next_openid
+      end
       response WechatMP.Api.Model.OpenidConnection
     end
 
     post :remark do
       path "cgi-bin/user/info/updateremark"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :openid, required(:string)
         field :remark, required(:string)
@@ -45,7 +53,9 @@ defmodule WechatMP.Api do
   namespace :members do
     post :blacklist do
       path "cgi-bin/tags/members/getblacklist"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :begin_openid, :string
       end
@@ -54,7 +64,9 @@ defmodule WechatMP.Api do
 
     post :ban do
       path "cgi-bin/tags/members/batchblacklist"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :openid_list, required(list(:string))
       end
@@ -63,7 +75,9 @@ defmodule WechatMP.Api do
 
     post :unban do
       path "cgi-bin/tags/members/batchunblacklist"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :openid_list, required(list(:string))
       end
@@ -74,7 +88,9 @@ defmodule WechatMP.Api do
   namespace :contacts, alias: :kf do
     post :add do
       path "customservice/kfaccount/add"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :kf_account, required(:string)
         field :nickname, required(:string)
@@ -85,7 +101,9 @@ defmodule WechatMP.Api do
 
     post :update do
       path "customservice/kfaccount/update"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :kf_account, required(:string)
         field :nickname, required(:string)
@@ -96,7 +114,9 @@ defmodule WechatMP.Api do
 
     post :delete do
       path "customservice/kfaccount/del"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :kf_account, required(:string)
         field :nickname, required(:string)
@@ -107,15 +127,19 @@ defmodule WechatMP.Api do
 
     post :avatar do
       path "customservice/kfaccount/uploadheadimg"
-      arg :access_token, required(:string)
-      arg :kf_account, required(:string)
+      args do
+        required :access_token
+        required :kf_account
+      end
       body :file
       response :ok
     end
 
     get :list do
       path "cgi-bin/customservice/getkflist"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       response WechatMP.Api.Model.ContactList
     end
   end
@@ -123,21 +147,27 @@ defmodule WechatMP.Api do
   namespace :messages do
     post :custom do
       path "cgi-bin/message/custom/send"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body WechatMP.Api.Model.CustomMessageBody
       response :ok
     end
 
     post :massive do
       path "cgi-bin/message/mass/sendall"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body WechatMP.Api.Model.MassiveMessageBody
       response WechatMP.Api.Model.MassiveMessage
     end
 
     post :template do
       path "cgi-bin/message/template/send"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :touser, required(:string)
         field :template_id, required(:string)
@@ -158,7 +188,9 @@ defmodule WechatMP.Api do
   namespace :templates do
     post :set_industry do
       path "cgi-bin/template/api_set_industry"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :industry_id1, required(:string)
         field :industry_id2, required(:string)
@@ -168,13 +200,15 @@ defmodule WechatMP.Api do
 
     get :industry do
       path "cgi-bin/template/get_industry"
-      arg :access_token, required(:string)
+      required :access_token
       response WechatMP.Api.Model.Industry
     end
 
     post :add do
       path "cgi-bin/template/api_add_template"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :template_id_short, required(:string)
       end
@@ -183,13 +217,17 @@ defmodule WechatMP.Api do
 
     get :list do
       path "cgi-bin/template/get_all_private_template"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       response WechatMP.Api.Model.TemplateList
     end
 
     post :delete do
       path "cgi-bin/template/del_private_template"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :template_id, required(:string)
       end
@@ -204,7 +242,9 @@ defmodule WechatMP.Api do
     """
     post :upload_image do
       path "cgi-bin/media/uploadimg"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :form do
         file :media, limit: 1024 * 1024
       end
@@ -213,7 +253,9 @@ defmodule WechatMP.Api do
 
     post :upload_video do
       path "cgi-bin/media/uploadvideo"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :media_id, required(:string)
         field :title, required(:string)
@@ -229,7 +271,9 @@ defmodule WechatMP.Api do
     """
     post :upload_news do
       path "cgi-bin/media/uploadnews"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :articles, required(:list) do
           field :thumb_media_id, required(:string)
@@ -246,8 +290,10 @@ defmodule WechatMP.Api do
 
     post :upload do
       path "cgi-bin/media/upload"
-      arg :access_token, required(:string)
-      arg :type, required(:string)
+      args do
+        required :access_token
+        required :type
+      end
       body :form do
         field :media, require(:file)
       end
@@ -256,8 +302,10 @@ defmodule WechatMP.Api do
 
     get :get do
       path "cgi-bin/media/get"
-      arg :access_token, required(:string)
-      arg :media_id, required(:string)
+      args do
+        required :access_token
+        required :media_id
+      end
       response WechatMP.Api.Model.Media
     end
   end
@@ -265,7 +313,9 @@ defmodule WechatMP.Api do
   namespace :materials do
     post :add_news do
       path "cgi-bin/material/add_news"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :articles, required(:list) do
           field :title, required(:string)
@@ -282,8 +332,10 @@ defmodule WechatMP.Api do
 
     post :add do
       path "cgi-bin/material/add_material"
-      arg :access_token, required(:string)
-      arg :type, required(:string)
+      args do
+        required :access_token
+        required :type
+      end
       body :form do
         field :media, required(:file)
         field :title, :string
@@ -294,7 +346,9 @@ defmodule WechatMP.Api do
 
     post :get do
       path "cgi-bin/material/get_material"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :media, required(:string)
       end
@@ -303,7 +357,9 @@ defmodule WechatMP.Api do
 
     post :delete do
       path "cgi-bin/material/del_material"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :media, required(:string)
       end
@@ -312,7 +368,9 @@ defmodule WechatMP.Api do
 
     post :update_news do
       path "cgi-bin/material/update_news"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :media_id, required(:string)
         field :index, required(:integer)
@@ -331,13 +389,17 @@ defmodule WechatMP.Api do
 
     get :count do
       path "cgi-bin/material/get_materialcount"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       response WechatMP.Api.Model.MaterialCount
     end
 
     post :list do
       path "cgi-bin/material/batchget_material"
-      arg :access_token, required(:string)
+      args do
+        required :access_token
+      end
       body :json do
         field :type, required(:string)
         field :offset, required(:integer)
@@ -352,36 +414,46 @@ defmodule WechatMP.Api do
   namespace :sns do
     get :access_token do
       path "sns/oauth2/access_token"
-      arg :appid, required(:string)
-      arg :secret, required(:string)
-      arg :code, required(:string)
-      arg :grant_type, required(:string) # should be "authorization_code"
+      args do
+        required :appid
+        required :secret
+        required :code
+        required :grant_type
+      end
 
       response WechatMP.Api.Model.AccessToken
     end
 
     get :refresh_token do
       path "sns/oauth2/refresh_token"
-      arg :appid, required(:string)
-      arg :grant_type, required(:string) # should be "refresh_token"
-      arg :refresh_token, required(:string)
+      args do
+        required :appid
+        required :grant_type
+        required :refresh_token
+      end
 
       response WechatMP.Api.Model.AccessToken
     end
 
     get :user_info do
       path "sns/userinfo"
-      arg :access_token, required(:string) # user access token
-      arg :openid, required(:string)
-      arg :lang, required(enum(["zh_CN", "zh_TW", "en"]))
+
+      args do
+        required :access_token
+        required :openid
+        required :lang
+      end
 
       response WechatMP.Api.Model.SNSUser
     end
 
     get :auth do
       path "sns/auth"
-      arg :access_token, required(:string)
-      arg :openid, required(:string)
+
+      args do
+        required :access_token
+        required :openid
+      end
 
       response :ok
     end
@@ -390,8 +462,10 @@ defmodule WechatMP.Api do
   namespace :ticket do
     get :get do
       path "cgi-bin/ticket/getticket"
-      arg :access_token, required(:string)
-      arg :type, required(enum(["jsapi", "wx_card"]))
+      args do
+        required :access_token
+        required :type
+      end
       resposne WechatMP.Api.Model.Ticket
     end
   end
