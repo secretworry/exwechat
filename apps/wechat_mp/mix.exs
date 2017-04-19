@@ -35,7 +35,6 @@ defmodule WechatMP.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:maxwell, "~> 2.2.0"},
-     {:wechat_base, in_umbrella: true}]
+    [{:wechat_base, in_umbrella: true}]
   end
 end
