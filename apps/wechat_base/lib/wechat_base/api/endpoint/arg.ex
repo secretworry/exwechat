@@ -9,11 +9,13 @@ defmodule WechatBase.Api.Endpoint.Arg do
   end
 
   @type t :: %__MODULE__{
+    name: String.t,
     required?: boolean,
     validator: nil | {Arg.Validator, any}
   }
 
-  defstruct required?: false, validator: nil
+  @enforce_keys ~w{name}a
+  defstruct [:name, required?: false, validator: nil]
 
   @spec coerce(args :: t, value :: any) :: {:ok, any} | {:error, error}
   def coerce(%{required?: true}, nil), do: {:error, {"can't be blank", []}}

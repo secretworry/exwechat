@@ -10,7 +10,7 @@ defmodule WechatBase.Api.Endpoint do
   @type t :: %__MODULE__{
     method: :get | :post,
     path: String.t,
-    args: %{required(String.t) => Endpoin.Arg.t},
+    args: [Endpoin.Arg.t],
     body_type: nil | {EndPoint.BodyType.t, any},
     response_type: {EndPoint.ResponseType.t, any}
   }
@@ -35,12 +35,12 @@ defmodule WechatBase.Api.Endpoint do
 
   defp embed_args(conn, %{args: args_spec}, args) do
     {params, errors} = Enum.reduce(args_spec, {Map.new, []}, fn
-      {key, arg}, {params, errors} ->
-        case Endpoint.Arg.coerce(arg, Maps.get_string_or_atom_field(args, key)) do
+      arg, {params, errors} ->
+        case Endpoint.Arg.coerce(arg, Maps.get_string_or_atom_field(args, arg.name)) do
           {:ok, value} ->
-            {Map.put(params, key, value), errors}
+            {Map.put(params, arg.name, value), errors}
           {:error, error} ->
-            {params, [{key, error} | errors]}
+            {params, [{arg.name, error} | errors]}
         end
     end)
     if Enum.empty?(errors) do
