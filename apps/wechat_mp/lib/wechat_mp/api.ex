@@ -237,7 +237,7 @@ defmodule WechatMP.Api do
 
   namespace :media do
 
-    @doc """
+    @desc """
     本接口所上传的图片不占用公众号的素材库中图片数量的5000个的限制。图片仅支持jpg/png格式，大小必须在1MB以下
     """
     post :upload_image do
@@ -251,7 +251,7 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.URL
     end
 
-    @doc """
+    @desc """
     群发接口-上传视频素材，获取media_id
     """
     post :upload_video do
@@ -267,7 +267,7 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.Media
     end
 
-    @doc """
+    @desc """
     群发接口-上传图文消息素材
     """
     post :upload_news do
@@ -289,7 +289,7 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.Media
     end
 
-    @doc """
+    @desc """
     创建临时素材
     """
     post :upload do
@@ -304,7 +304,7 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.MediaId
     end
 
-    @doc """
+    @desc """
     获取临时素材
     """
     get :get do
@@ -318,7 +318,7 @@ defmodule WechatMP.Api do
   end
 
   namespace :materials do
-    @doc """
+    @desc """
     新增永久图文素材
     """
     post :add_news do
@@ -340,7 +340,7 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.MediaId
     end
 
-    @doc """
+    @desc """
     新增永久素材
     """
     post :add do
@@ -357,7 +357,7 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.MaterialId
     end
 
-    @doc """
+    @desc """
     获取永久素材
 
     注意临时素材无法通过本接口获取
@@ -373,7 +373,7 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.Material
     end
 
-    @doc """
+    @desc """
     删除永久素材
     """
     post :delete do
@@ -387,7 +387,7 @@ defmodule WechatMP.Api do
       response :ok
     end
 
-    @doc """
+    @desc """
     修改永久图文素材
     """
     post :update_news do
@@ -411,7 +411,7 @@ defmodule WechatMP.Api do
       response :ok
     end
 
-    @doc """
+    @desc """
     获取素材总数
     """
     get :count do
@@ -422,7 +422,7 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.MaterialCount
     end
 
-    @doc """
+    @desc """
     获取素材列表
     """
     post :list do
@@ -490,7 +490,7 @@ defmodule WechatMP.Api do
   end
 
   namespace :ticket do
-    @doc"""
+    @desc"""
     请求JsApiTicket和卡券ApiTicket
     """
     get :get do
