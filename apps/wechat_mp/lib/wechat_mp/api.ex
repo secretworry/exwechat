@@ -251,6 +251,9 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.URL
     end
 
+    @doc """
+    群发接口-上传视频素材，获取media_id
+    """
     post :upload_video do
       path "cgi-bin/media/uploadvideo"
       args do
@@ -265,9 +268,7 @@ defmodule WechatMP.Api do
     end
 
     @doc """
-      Upload news before sending to users
-      
-      source: https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1455784140&token=&lang=zh_CN
+    群发接口-上传图文消息素材
     """
     post :upload_news do
       path "cgi-bin/media/uploadnews"
@@ -288,6 +289,9 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.Media
     end
 
+    @doc """
+    创建临时素材
+    """
     post :upload do
       path "cgi-bin/media/upload"
       args do
@@ -300,6 +304,9 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.MediaId
     end
 
+    @doc """
+    获取临时素材
+    """
     get :get do
       path "cgi-bin/media/get"
       args do
@@ -311,6 +318,9 @@ defmodule WechatMP.Api do
   end
 
   namespace :materials do
+    @doc """
+    新增永久图文素材
+    """
     post :add_news do
       path "cgi-bin/material/add_news"
       args do
@@ -330,11 +340,14 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.MediaId
     end
 
+    @doc """
+    新增永久素材
+    """
     post :add do
       path "cgi-bin/material/add_material"
       args do
         required :access_token
-        required :type
+        required :type, enum(["image", "voice", "video", "thumb"])
       end
       body :form do
         field :media, required(:file)
@@ -344,6 +357,11 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.MaterialId
     end
 
+    @doc """
+    获取永久素材
+
+    注意临时素材无法通过本接口获取
+    """
     post :get do
       path "cgi-bin/material/get_material"
       args do
@@ -355,6 +373,9 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.Material
     end
 
+    @doc """
+    删除永久素材
+    """
     post :delete do
       path "cgi-bin/material/del_material"
       args do
@@ -366,6 +387,9 @@ defmodule WechatMP.Api do
       response :ok
     end
 
+    @doc """
+    修改永久图文素材
+    """
     post :update_news do
       path "cgi-bin/material/update_news"
       args do
@@ -387,6 +411,9 @@ defmodule WechatMP.Api do
       response :ok
     end
 
+    @doc """
+    获取素材总数
+    """
     get :count do
       path "cgi-bin/material/get_materialcount"
       args do
@@ -395,6 +422,9 @@ defmodule WechatMP.Api do
       response WechatMP.Api.Model.MaterialCount
     end
 
+    @doc """
+    获取素材列表
+    """
     post :list do
       path "cgi-bin/material/batchget_material"
       args do
@@ -418,7 +448,7 @@ defmodule WechatMP.Api do
         required :appid
         required :secret
         required :code
-        required :grant_type
+        required :grant_type, "authorization_code"
       end
 
       response WechatMP.Api.Model.AccessToken
@@ -428,7 +458,7 @@ defmodule WechatMP.Api do
       path "sns/oauth2/refresh_token"
       args do
         required :appid
-        required :grant_type
+        required :grant_type, "refresh_token"
         required :refresh_token
       end
 
@@ -441,7 +471,7 @@ defmodule WechatMP.Api do
       args do
         required :access_token
         required :openid
-        required :lang
+        required :lang, enum(["zh_CN", "zh_TW", "en"])
       end
 
       response WechatMP.Api.Model.SNSUser
@@ -460,11 +490,14 @@ defmodule WechatMP.Api do
   end
 
   namespace :ticket do
+    @doc"""
+    请求JsApiTicket和卡券ApiTicket
+    """
     get :get do
       path "cgi-bin/ticket/getticket"
       args do
         required :access_token
-        required :type
+        required :type, enum(["jsapi", "wx_card"])
       end
       resposne WechatMP.Api.Model.Ticket
     end
