@@ -10,6 +10,8 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.SchemaTest do
           == [{:string, "string", %{}}]
       assert validate!([{{:array, :string}, "array_of_string", %{}, []}])
           == [{{:array, :string}, "array_of_string", %{}, []}]
+      assert validate!([{{:map, :string}, "map_of_string", %{}, []}])
+          == [{{:map, :string}, "map_of_string", %{}, []}]
       assert validate!([{:object, "object", %{}, [{:string, "string", %{}}]}])
           == [{:object, "object", %{}, [{:string, "string", %{}}]}]
     end
