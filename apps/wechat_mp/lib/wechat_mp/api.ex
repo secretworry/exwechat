@@ -19,7 +19,7 @@ defmodule WechatMP.Api do
       end
 
       body :json do
-        array :user_list do
+        field :user_list, required(:array) do
           field :openid, required(:string)
           field :lang, :string
         end
@@ -276,7 +276,7 @@ defmodule WechatMP.Api do
         required :access_token
       end
       body :json do
-        field :articles, required(:list) do
+        field :articles, required(:array) do
           field :thumb_media_id, required(:string)
           field :author, :string
           field :title, required(:string)
@@ -327,7 +327,7 @@ defmodule WechatMP.Api do
         required :access_token
       end
       body :json do
-        field :articles, required(:list) do
+        field :articles, required(:array) do
           field :title, required(:string)
           field :thumb_media_id, required(:string)
           field :author, required(:string)
@@ -398,7 +398,7 @@ defmodule WechatMP.Api do
       body :json do
         field :media_id, required(:string)
         field :index, required(:integer)
-        field :articles do
+        field :articles, required(:array) do
           field :title, required(:string)
           field :thumb_media_id, required(:string)
           field :author, required(:string)
