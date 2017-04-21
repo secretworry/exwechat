@@ -5,13 +5,22 @@ defmodule WechatBase.Api.Notation do
   @doc false
   def scope(env, kind, identifier, attrs, block) do
     open_scope(kind, env, identifier, attrs)
-    env = decorate_env(env)
+    env = decorate_env(kind, env)
 
     block |> expand(env)
 
     close_scope(kind, env, identifier)
 
     Scope.recorded!(env.module, kind, identifier)
+  end
+
+  defp expand(ast, env) do
+    Macro.prewalk(ast, fn
+      {:@, _, [{:desc, _, [desc]}]} ->
+        Module.put_attribute(env.module, :__wechatex_desc__, desc)
+      {_, _, _} = node -> Macro.expand(node, env)
+        node -> node
+    end)
   end
 
   defp open_scope(kind, env, identifier, attrs) do

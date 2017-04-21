@@ -71,8 +71,8 @@ defmodule WechatBase.Api.Endpoint do
     {:ok, conn}
   end
 
-  defp do_embed_body(conn, %{body_type: {body_type, args}}, body) do
-    body_type.embed(conn, args, body)
+  defp do_embed_body(conn, %{body_type: {body_type, opts}}, body) do
+    body_type.embed(conn, body, opts)
   end
 
   defp do_request(method, conn) do

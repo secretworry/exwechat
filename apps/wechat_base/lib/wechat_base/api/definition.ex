@@ -1,6 +1,6 @@
 defmodule WechatBase.Api.Definition do
 
-  @type reference :: %{
+  @type ref_t :: %{
     module: atom,
     identifier: atom,
     location: %{
@@ -13,7 +13,7 @@ defmodule WechatBase.Api.Definition do
     identifier: String.t,
     endpoint: WechatBase.Api.Endpoint.t,
     desc: String.t,
-    __reference__: nil | reference
+    __reference__: nil | ref_t
   }
 
   @enforce_keys ~w{identifier endpoint}a

@@ -4,9 +4,9 @@ defmodule WechatBase.Api.Endpoint.DumbBodyType do
 
   alias Maxwell.Conn
 
-  def init(args), do: args
+  def init(opts), do: opts
 
-  def embed(conn, {:error, _} = error, body), do: error
+  def embed(conn, body, {:error, _} = error), do: error
 
-  def embed(conn, _args, body), do: {:ok, conn |> Conn.put_req_body(conn, body)}
+  def embed(conn, body, opts), do: {:ok, conn |> Conn.put_req_body(conn, body)}
 end

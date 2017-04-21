@@ -15,12 +15,12 @@ defmodule WechatBase.Api.Notation.Scope do
   end
 
   def open(module, kind, attrs) do
-    Module.put_attribute(mod, @stack, [%__MODULE__{kind: kind, attrs: attrs} | on(module)])
+    Module.put_attribute(module, @stack, [%__MODULE__{kind: kind, attrs: attrs} | on(module)])
   end
 
   def close(module) do
     {current, rest} = split(module)
-    Module.put_attribute(mod, @stack, rest)
+    Module.put_attribute(module, @stack, rest)
     current
   end
   
@@ -30,12 +30,21 @@ defmodule WechatBase.Api.Notation.Scope do
   end
 
   def attr(module, key) do
-    caes current(module) do
+    case current(module) do
       %{attrs: attrs} ->
-        Keyword.get(attrs: key)
+        Keyword.get(attrs, key)
       _ ->
         nil
     end
+  end
+
+  def put_attr(module, key, value) do
+    update_current(module, fn
+      %{attrs: attrs} = scope ->
+        %{scope | attrs: Keyword.put(attrs, key, value)}
+      nil ->
+        nil
+    end)
   end
 
   def namespace(module) do
@@ -69,9 +78,9 @@ defmodule WechatBase.Api.Notation.Scope do
     end
   end
 
-  defp update_current(mod, fun) do
-    {current, rest} = split(mod)
+  defp update_current(module, fun) do
+    {current, rest} = split(module)
     updated = fun.(current)
-    Module.put_attribute(mod, @stack, [updated | rest])
+    Module.put_attribute(module, @stack, [updated | rest])
   end
 end
