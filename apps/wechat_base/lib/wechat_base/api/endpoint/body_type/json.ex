@@ -12,7 +12,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json do
 
   @spec init(Json.Schema.t) :: opts
   def init(schema) do
-    JSON.Schema.validate!(schema)
+    Json.Schema.validate!(schema)
   end
 
 
@@ -29,7 +29,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json do
   end
 
   defp validate_body(body, schema) do
-    :ok
+    Json.Schema.validate_body(schema, body)
   end
 
   def embed(_conn, body, _opts) do

@@ -1,5 +1,5 @@
 defmodule WechatBase.Api.EndpointTest do
-  use ExUnit.Case
+  use WechatBase.Case
 
   alias WechatBase.Api.Endpoint
   alias WechatBase.Error
@@ -14,19 +14,6 @@ defmodule WechatBase.Api.EndpointTest do
     fn _method, conn ->
       {:error, reason, %{conn | state: :error}}
     end
-  end
-
-  defp assert_error({:error, {error, message, args}}, {expect_error, expect_message, expect_args}) do
-    assert error == expect_error
-    assert message == expect_message
-    Enum.each(expect_args, fn
-      {key, value} ->
-        assert Map.get(args, key) == value
-    end)
-  end
-
-  defp assert_error(response, error) do
-    refute true, "expect error #{inspect error} but got #{inspect response}"
   end
 
   defp required_args(name) do

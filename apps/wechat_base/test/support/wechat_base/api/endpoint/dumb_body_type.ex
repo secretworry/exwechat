@@ -8,5 +8,5 @@ defmodule WechatBase.Api.Endpoint.DumbBodyType do
 
   def embed(conn, body, {:error, _} = error), do: error
 
-  def embed(conn, body, opts), do: {:ok, conn |> Conn.put_req_body(conn, body)}
+  def embed(conn, body, opts), do: {:ok, conn |> Conn.put_req_body(body)}
 end
