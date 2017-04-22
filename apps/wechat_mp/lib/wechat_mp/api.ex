@@ -246,7 +246,7 @@ defmodule WechatMP.Api do
         required :access_token
       end
       body :form do
-        file :media, limit: 1024 * 1024
+        field :media, required(:file), limit: 1024 * 1024
       end
       response WechatMP.Api.Model.URL
     end
@@ -262,7 +262,7 @@ defmodule WechatMP.Api do
       body :json do
         field :media_id, required(:string)
         field :title, required(:string)
-        field :description, required(:description)
+        field :description, required(:string)
       end
       response WechatMP.Api.Model.Media
     end
@@ -299,7 +299,7 @@ defmodule WechatMP.Api do
         required :type
       end
       body :form do
-        field :media, require(:file)
+        field :media, required(:file)
       end
       response WechatMP.Api.Model.MediaId
     end
