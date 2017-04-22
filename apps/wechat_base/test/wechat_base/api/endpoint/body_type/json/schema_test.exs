@@ -1,6 +1,6 @@
 defmodule WechatBase.Api.Endpoint.BodyType.Json.SchemaTest do
 
-  use WechatBase.Case
+  use WechatBase.Api.Endpoint.BodyType.Case
 
   import WechatBase.Api.Endpoint.BodyType.Json.Schema
 
@@ -18,7 +18,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.SchemaTest do
     end
 
     test "should reject illegal schema node" do
-      assert_raise ArgumentError, "Illegal node, expecting {primary_type, identifier, opts} or {compose_type, identifier, opts, children}, but got {:string} at \"\"", fn->
+      assert_raise ArgumentError, "Illegal node, expecting {node_type, identifier, opts, children}, but got {:string} at \"\"", fn->
         validate!([{:string}])
       end
     end
@@ -46,14 +46,6 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.SchemaTest do
         validate!([{:string, "string", %{}, [{:string, "string", %{}, []}]}])
       end
     end
-  end
-
-  def assert_body_errors({:error, {:illegal_body, _, %{errors: errors}}}, expect_errors) do
-    assert Enum.sort_by(errors, &elem(&1, 0))
-        == Enum.sort_by(expect_errors, &elem(&1, 0))
-  end
-  def assert_body_errors(error, errors) do
-    refute true, "Expect errors #{inspect errors} but got #{error}"
   end
 
   describe "validate_body/2" do

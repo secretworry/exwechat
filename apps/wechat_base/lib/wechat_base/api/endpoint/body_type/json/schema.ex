@@ -45,7 +45,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
   end
 
   defp validate_schema_node!(illegal_node, prefix) do
-    raise ArgumentError, "Illegal node, expecting {primary_type, identifier, opts} or {compose_type, identifier, opts, children}, but got #{inspect illegal_node} at #{inspect prefix}"
+    raise ArgumentError, "Illegal node, expecting {node_type, identifier, opts, children}, but got #{inspect illegal_node} at #{inspect prefix}"
   end
 
   defp validate_node_type_and_children!(primary_type, [], _prefix) when primary_type in @primary_type do

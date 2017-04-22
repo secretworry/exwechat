@@ -1,6 +1,6 @@
 defmodule WechatBase.Api.Endpoint.BodyType.Form.SchemaTest do
 
-  use WechatBase.Case
+  use WechatBase.Api.Endpoint.BodyType.Case
 
   import WechatBase.Api.Endpoint.BodyType.Form.Schema
 
@@ -27,14 +27,6 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.SchemaTest do
 
   def fixture_path(name) do
     Path.join(~w{test fixtures wechat_base api endpoint body_type form schema} ++ [name])
-  end
-
-  def assert_body_errors({:error, {:illegal_body, _, %{errors: errors}}}, expect_errors) do
-    assert Enum.sort_by(errors, &elem(&1, 0))
-        == Enum.sort_by(expect_errors, &elem(&1, 0))
-  end
-  def assert_body_errors(error, errors) do
-    refute true, "Expect errors #{inspect errors} but got #{error}"
   end
 
   describe "validate_body/1" do
