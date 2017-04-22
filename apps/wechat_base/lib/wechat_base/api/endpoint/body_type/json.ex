@@ -21,6 +21,10 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json do
       {:ok, do_embed(conn, body)}
     end
   end
+  
+  def embed(_conn, body, _opts) do
+    {:error, Error.new(:illegal_body, "Expect a map as body but got %{body}", %{body: body})}
+  end
 
   defp do_embed(conn, body) do
     conn
@@ -32,8 +36,5 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json do
     Json.Schema.validate_body(schema, body)
   end
 
-  def embed(_conn, body, _opts) do
-    {:error, Error.new(:illegal_body, "Expect a map as body but got %{body}", %{body: body})}
-  end
 
 end

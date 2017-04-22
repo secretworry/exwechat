@@ -14,4 +14,15 @@ defmodule WechatBase.TestHelper do
   def assert_error(response, error) do
     refute true, "expect error #{inspect error} but got #{inspect response}"
   end
+
+  defmacro fixture_path(file) do
+    do_fixture_path(__CALLER__, file)
+  end
+
+  defp do_fixture_path(env, file) do
+    prefix = ["test", "fixtures" | Module.split(env.module) |> Enum.map(&Macro.underscore/1)]
+    quote do
+      Path.join(unquote(prefix) ++ [unquote(file)])
+    end
+  end
 end

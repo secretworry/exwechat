@@ -25,10 +25,6 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.SchemaTest do
     end
   end
 
-  def fixture_path(name) do
-    Path.join(~w{test fixtures wechat_base api endpoint body_type form schema} ++ [name])
-  end
-
   describe "validate_body/1" do
     test "should validate valid body" do
       assert validate_body([], %{}) == :ok

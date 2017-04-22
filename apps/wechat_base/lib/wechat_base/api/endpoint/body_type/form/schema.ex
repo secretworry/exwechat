@@ -20,6 +20,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.Schema do
 
   @node_types [:file] ++ @primary_type
 
+  @type validate!(t) :: t | no_return
   def validate!(schema) when is_list(schema) do
     Enum.map(schema, &validate_schema_node!/1)
   end
