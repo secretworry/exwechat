@@ -20,8 +20,10 @@ defmodule WechatBase.Api.Notation do
     Macro.prewalk(ast, fn
       {:@, _, [{:desc, _, [desc]}]} ->
         Module.put_attribute(env.module, :__wechatex_desc__, desc)
-      {_, _, _} = node -> Macro.expand(node, env)
-        node -> node
+      {_, _, _} = node ->
+        Macro.expand(node, env)
+      node ->
+        node
     end)
   end
 
