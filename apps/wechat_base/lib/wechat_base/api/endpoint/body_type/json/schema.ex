@@ -126,12 +126,13 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     context
   end
 
-  defp validate_node(context, {primary_type, identifier, _args, _}, value) when primary_type in @primary_type do
-    if validate_value(primary_type, value) do
-      context
-    else
-      context
-      |> put_error(identifier, "should be a #{primary_type}", value: value)
+  defp validate_node(context, {primary_type, identifier, args, _}, value) when primary_type in @primary_type do
+    case validate_value(primary_type, value, args) do
+      :ok ->
+        context
+      {:error, {msg, args}} ->
+        context
+        |> put_error(identifier, msg, args)
     end
   end
 
@@ -174,10 +175,20 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     |> put_error(identifier, "should be a map", value: not_map)
   end
 
-  defp validate_value(:string, value) when is_binary(value), do: true
-  defp validate_value(:integer, value) when is_integer(value), do: true
-  defp validate_value(:float, value) when is_float(value) or is_integer(value), do: true
-  defp validate_value(_, _value), do: false
+  defp validate_value(:string, value, opts) when is_binary(value), do: maybe_validate_enum(value, opts)
+  defp validate_value(:integer, value, opts) when is_integer(value), do: maybe_validate_enum(value, opts)
+  defp validate_value(:float, value, opts) when is_float(value) or is_integer(value), do: maybe_validate_enum(value, opts)
+  defp validate_value(type, value, _opts), do: {:error, {"should be a #{type}", [value: value]}}
+
+  defp maybe_validate_enum(value, %{enum: enum}) do
+    if Enum.member?(enum, value) do
+      :ok
+    else
+      {:error, {"should be in %{enum} but got %{value}", [enum: enum, value: value]}}
+    end
+  end
+
+  defp maybe_validate_enum(_, _), do: :ok
 
   defp init_body_context() do
     %{errors: [], prefix: []}

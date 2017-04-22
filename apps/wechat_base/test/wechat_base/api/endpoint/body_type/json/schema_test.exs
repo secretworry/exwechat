@@ -149,5 +149,12 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.SchemaTest do
          {"array[2]", {"should be a string", [value: 2]}}]
       )
     end
+
+    test "should reject value not in given enum args" do
+      assert_body_errors(
+        validate_body([{:integer, "enum_integer", %{enum: [0, 1]}, []}], %{"enum_integer" => 2}),
+        [{"enum_integer", {"should be in %{enum} but got %{value}", [enum: [0, 1], value: 2]}}]
+      )
+    end
   end
 end
