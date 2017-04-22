@@ -10,11 +10,13 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
 
   @type node_opts :: %{required?: boolean}
 
-  @type id_t :: string | atom
+  @type id_t :: String.t | atom
 
   @type schema_node :: {node_type, id_t, node_opts, [schema_node]}
   
   @type t :: [schema_node]
+
+  @compose_type [:array, :map]
 
   @primary_type [:string, :integer, :float]
 
@@ -46,7 +48,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     raise ArgumentError, "Illegal node, expecting {primary_type, identifier, opts} or {compose_type, identifier, opts, children}, but got #{inspect illegal_node} at #{inspect prefix}"
   end
 
-  defp validate_node_type_and_children!(primary_type, [], prefix) when primary_type in @primary_type do
+  defp validate_node_type_and_children!(primary_type, [], _prefix) when primary_type in @primary_type do
     :ok
   end
 
@@ -58,11 +60,11 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     :ok
   end
 
-  defp validate_node_type_and_children!({compose_type, node_type}, children, prefix) do
+  defp validate_node_type_and_children!({compose_type, node_type}, children, prefix) when compose_type in @compose_type do
     validate_node_type_and_children!(node_type, children, prefix)
   end
 
-  defp validate_schema_node_type!(node_type, prefix) when node_type in @primary_type or node_type == :object do
+  defp validate_schema_node_type!(node_type, _prefix) when node_type in @primary_type or node_type == :object do
     node_type
   end
 
@@ -78,7 +80,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     raise ArgumentError, "Illegal node_type #{inspect illegal_node_type} at #{inspect prefix}"
   end
 
-  defp validate_schema_identifier!(identifier, prefix) when is_atom(identifier) or is_binary(identifier) do
+  defp validate_schema_identifier!(identifier, _prefix) when is_atom(identifier) or is_binary(identifier) do
     identifier
   end
 
@@ -90,6 +92,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
 
   @type body_context :: %{errors: [error], prefix: [String.t]}
 
+  @spec validate_body(t, Map.t) :: :ok | {:error, Error.t}
   def validate_body(schema, body) do
     context = validate_object(init_body_context, schema, body)
     if Enum.empty?(context.errors) do
@@ -116,14 +119,14 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     context
     |> put_error(identifier, "is required")
   end
-  defp validate_node(context, {_, identifier, %{required?: false}, _}, nil) do
+  defp validate_node(context, {_, _identifier, %{required?: false}, _}, nil) do
     context
   end
-  defp validate_node(context, {_, identifier, _, _}, nil) do
+  defp validate_node(context, {_, _identifier, _, _}, nil) do
     context
   end
 
-  defp validate_node(context, {primary_type, identifier, args, _}, value) when primary_type in @primary_type do
+  defp validate_node(context, {primary_type, identifier, _args, _}, value) when primary_type in @primary_type do
     if validate_value(primary_type, value) do
       context
     else
@@ -132,14 +135,14 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     end
   end
 
-  defp validate_node(context, {:object, identifier, args, children}, map) when is_map(map) do
+  defp validate_node(context, {:object, identifier, _args, children}, map) when is_map(map) do
     context
     |> push_prefix(identifier)
     |> validate_object(children, map)
     |> pop_prefix
   end
 
-  defp validate_node(context, {:object, identifier, _args, children}, not_map) do
+  defp validate_node(context, {:object, identifier, _args, _children}, not_map) do
     context
     |> put_error(identifier, "should be a map", value: not_map)
   end
@@ -152,7 +155,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     end) |> pop_prefix
   end
 
-  defp validate_node(context, {{:array, type}, identifier, _, children}, not_list) do
+  defp validate_node(context, {{:array, _type}, identifier, _, _children}, not_list) do
     context
     |> put_error(identifier, "should be a list", value: not_list)
   end
@@ -166,7 +169,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
     end) |> pop_prefix
   end
 
-  defp validate_node(context, {{:map, type}, identifier, args, children}, not_map) do
+  defp validate_node(context, {{:map, _type}, identifier, _args, _children}, not_map) do
     context
     |> put_error(identifier, "should be a map", value: not_map)
   end
@@ -174,7 +177,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Json.Schema do
   defp validate_value(:string, value) when is_binary(value), do: true
   defp validate_value(:integer, value) when is_integer(value), do: true
   defp validate_value(:float, value) when is_float(value) or is_integer(value), do: true
-  defp validate_value(_, value), do: false
+  defp validate_value(_, _value), do: false
 
   defp init_body_context() do
     %{errors: [], prefix: []}

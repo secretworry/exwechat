@@ -2,6 +2,8 @@ defmodule WechatBase.Api.Notation do
 
   alias WechatBase.Api.Definition
 
+  alias WechatBase.Api.Notation.Scope
+
   @doc false
   def scope(env, kind, identifier, attrs, block) do
     open_scope(kind, env, identifier, attrs)
@@ -65,6 +67,7 @@ defmodule WechatBase.Api.Notation do
       import WechatBase.Api.Notation.Endpoint
       __ENV__
     end, [], env)
+    env
   end
   defp decorate_env(_kind, env), do: env
 
