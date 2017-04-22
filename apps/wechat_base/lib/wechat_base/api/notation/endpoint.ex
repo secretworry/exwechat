@@ -18,7 +18,7 @@ defmodule WechatBase.Api.Notation.Endpoint do
   end
 
   defp record_args(env, block) do
-    args = Args.eval(env, block)
+    args = Args.eval(block, env)
     Scope.put_attr(env.module, :args, args)
   end
 

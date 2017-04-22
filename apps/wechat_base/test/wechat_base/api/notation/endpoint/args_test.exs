@@ -7,10 +7,10 @@ defmodule WechatBase.Api.Notation.Endpoint.ArgsTest do
     test "should build args" do
       defmodule TestEval do
         alias WechatBase.Api.Notation.Endpoint.Args
-        @result Args.eval(__ENV__, quote do
+        @result Args.eval(quote do
           required :required
           optional :optional
-        end)
+        end, __ENV__)
         def result, do: @result
       end
 

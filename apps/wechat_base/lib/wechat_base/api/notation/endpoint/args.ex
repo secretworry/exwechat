@@ -4,7 +4,7 @@ defmodule WechatBase.Api.Notation.Endpoint.Args do
 
   @args :__wechatex_args__
 
-  def eval(env, block) do
+  def eval(block, env) do
     env = decorate_env(env)
     block |> expand(env)
     build_args(env.module)
