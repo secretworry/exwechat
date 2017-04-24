@@ -1,5 +1,5 @@
-defmodule WechatBase.Api.Endpoint.BodyType.Arg.Validator.Enum do
-  @behaviour WechatBase.Api.Endpoint.BodyType.Arg.Validator
+defmodule WechatBase.Api.Endpoint.Arg.Validator.Enum do
+  @behaviour WechatBase.Api.Endpoint.Arg.Validator
 
   def init(opts) when is_list(opts) do
     opts

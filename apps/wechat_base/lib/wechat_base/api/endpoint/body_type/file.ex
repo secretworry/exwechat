@@ -18,12 +18,13 @@ defmodule WechatBase.Api.Endpoint.BodyType.File do
     end
   end
 
+  def embed(_conn, not_path, _opts) do
+    {:error, Error.new(:illegal_body, "Expecting a path as body but got %{body}", %{body: not_path})}
+  end
+
   defp do_embed(conn, path) do
     conn
     |> Conn.put_req_body({:file, path})
   end
 
-  def embed(conn, not_path, opts) do
-    {:error, Error.new(:illegal_body, "Expecting a path as body but got %{body}", %{body: not_path})}
-  end
 end

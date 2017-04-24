@@ -16,6 +16,10 @@ defmodule WechatBase.Api.Notation do
     Scope.recorded!(env.module, kind, identifier)
   end
 
+  def get_definitions(module) do
+    Module.get_attribute(module, :wechatex_definitions) || []
+  end
+
   defp expand(ast, env) do
     Macro.prewalk(ast, fn
       {:@, _, [{:desc, _, [desc]}]} ->
@@ -46,17 +50,16 @@ defmodule WechatBase.Api.Notation do
 
   defp close_scope_and_define_definition(env) do
     definition = build_definition(env)
-    put_definition(env, definition)
+    put_definition(env.module, definition)
     Scope.close(env.module)
   end
 
   defp build_definition(env) do
     endpoint = WechatBase.Api.Notation.Endpoint.build(env.module)
-    name = Scope.namespace(env.module)
+    name = Scope.namespace(env.module) |> Enum.join(".")
     description = Scope.attr(env.module, :description)
     reference = Scope.attr(env.module, :__reference__)
-    definition = %Definition{identifier: name, endpoint: endpoint, desc: description || "", __reference__: reference}
-    put_definition(env.module, definition)
+    %Definition{identifier: name, endpoint: endpoint, desc: description || "", __reference__: reference}
   end
 
   defp put_definition(module, definition) do
@@ -77,14 +80,14 @@ defmodule WechatBase.Api.Notation do
     attrs
     |> Keyword.put(
       :__reference__,
-      Macro.escape(%{
+      %{
         module: env.module,
         identifier: identifier,
         location: %{
           file: env.file,
           line: env.line
         }
-      })
+      }
     )
   end
 
