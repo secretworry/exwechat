@@ -4,6 +4,8 @@ defmodule WechatBase.Api.Notation.Endpoint.BodyType.Json do
 
   alias WechatBase.Api.Endpoint.BodyType.Json
 
+  import WechatBase.Api.Notation.Endpoint.BodyType.EnumHelper, only: [resolve_enum_args: 2]
+
   @stack :__exwechat_body_type_json__
 
   def eval(env, _args, block) do
@@ -104,37 +106,6 @@ defmodule WechatBase.Api.Notation.Endpoint.BodyType.Json do
         {container_type, subtype}
       type, subtype when not is_nil(subtype) ->
         raise ArgumentError, "#{type} is not a container type"
-    end)
-  end
-
-  defp resolve_enum_args([values], args) when is_list(values) do
-    resolve_enum_args(values, args)
-  end
-
-  defp resolve_enum_args(values, args) do
-    {type_from_values(values), Map.put(args, :enum, values)}
-  end
-
-  defp type_from_values(values) do
-    Enum.reduce(values, nil, fn
-      integer, nil when is_integer(integer) ->
-        :integer
-      integer, :integer when is_integer(integer) ->
-        :integer
-      float, :integer when is_float(float) ->
-        :float
-      string, nil when is_binary(string) ->
-        :string
-      string, :string when is_binary(string) ->
-        :string
-      float, nil when is_float(float) ->
-        :float
-      float, :float when is_float(float) or is_integer(float) ->
-        :float
-      value, nil ->
-        raise ArgumentError, "Expecting integers, strings or floats but got #{inspect value}"
-      value, type ->
-        raise ArgumentError, "Expecting values of enum to be of the same type, but got #{inspect values}"
     end)
   end
 
