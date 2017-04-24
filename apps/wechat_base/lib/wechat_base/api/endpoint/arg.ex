@@ -4,8 +4,9 @@ defmodule WechatBase.Api.Endpoint.Arg do
   @type error :: {String.t, Keyword.t}
 
   defmodule Validator do
-    @callback init(args :: any) :: any
-    @callback validate(any, any) :: :ok | {:error, {String.t, Keyword.t}}
+    @type opts_t :: any
+    @callback init(opts :: any) :: opts_t
+    @callback validate(any, opts_t) :: :ok | {:error, {String.t, Keyword.t}}
   end
 
   @type t :: %__MODULE__{
