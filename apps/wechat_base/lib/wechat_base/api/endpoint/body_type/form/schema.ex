@@ -6,7 +6,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.Schema do
 
   alias WechatBase.Api.Endpoint.BodyType.FileValidator
 
-  @type node_type :: :file | :string | :integer | :float
+  @type node_type :: :file | :string | :integer | :float | :json
 
   @type id_t :: String.t | atom
 
@@ -16,7 +16,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.Schema do
 
   @type t :: [schema_node]
 
-  @primary_type [:string, :integer, :float]
+  @primary_type [:string, :integer, :float, :json]
 
   @node_types [:file] ++ @primary_type
 
@@ -38,7 +38,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.Schema do
   end
 
   defp validate_node_type!(illegal_node_type) do
-    raise ArgumentError, "Illegal node type, expecting #{inspect @node_types} but got #{illegal_node_type}"
+    raise ArgumentError, "Illegal node type, expecting #{inspect @node_types} but got #{inspect illegal_node_type}"
   end
 
   defp validate_identifier!(identifier) when is_binary(identifier) or is_atom(identifier) do
@@ -46,7 +46,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.Schema do
   end
 
   defp validate_identifier!(illegal_identifier) do
-    raise ArgumentError, "Illegal identifier, expecting a string or atom but got #{illegal_identifier}"
+    raise ArgumentError, "Illegal identifier, expecting a string or atom but got #{inspect illegal_identifier}"
   end
 
   @spec validate_body(t, Map.t) :: :ok | {:error, Error.t}
@@ -99,6 +99,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.Schema do
   defp validate_value(:string, value) when is_binary(value), do: true
   defp validate_value(:integer, value) when is_integer(value), do: true
   defp validate_value(:float, value) when is_float(value) or is_integer(value), do: true
+  defp validate_value(:json, value) when is_map(value) or is_binary(value) or is_number(value), do: true
   defp validate_value(_, _value), do: false
 
   defp put_error(errors, identifier, message, args \\ []) do

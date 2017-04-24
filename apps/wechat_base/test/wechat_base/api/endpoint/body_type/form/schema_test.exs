@@ -13,7 +13,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.SchemaTest do
     end
 
     test "should reject illegal type" do
-      assert_raise ArgumentError, "Illegal node type, expecting [:file, :string, :integer, :float] but got illegal_type", fn->
+      assert_raise ArgumentError, "Illegal node type, expecting [:file, :string, :integer, :float, :json] but got :illegal_type", fn->
         validate!([{:illegal_type, "field", %{}}])
       end
     end
@@ -33,6 +33,7 @@ defmodule WechatBase.Api.Endpoint.BodyType.Form.SchemaTest do
       assert validate_body([{:integer, "integer", %{}}], %{"integer" => 5})
       assert validate_body([{:float, "float", %{}}], %{"float" => 5.5})
       assert validate_body([{:float, "float", %{}}], %{"float" => 5})
+      assert validate_body([{:json, "json", %{}}], %{"json" => %{"field" => "value"}})
     end
 
     test "should reject value of illegal type" do

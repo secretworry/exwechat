@@ -352,7 +352,7 @@ defmodule WechatMP.Api do
       body :form do
         field :media, required(:file)
         field :title, :string
-        field :description, :json
+        field :description, :json #{"title":VIDEO_TITLE, "introduction":INTRODUCTION}
       end
       response WechatMP.Api.Model.MaterialId
     end
