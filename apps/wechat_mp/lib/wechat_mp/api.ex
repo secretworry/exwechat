@@ -403,7 +403,7 @@ defmodule WechatMP.Api do
           field :thumb_media_id, required(:string)
           field :author, required(:string)
           field :digest, required(:string)
-          field :show_cover_pic, required(enum([0, 1]))
+          field :show_cover_pic, required(enum(0, 1))
           field :content, required(:string)
           field :content_source_url, required(:string)
         end
@@ -471,7 +471,7 @@ defmodule WechatMP.Api do
       args do
         required :access_token
         required :openid
-        required :lang, enum(["zh_CN", "zh_TW", "en"])
+        required :lang, enum("zh_CN", "zh_TW", "en")
       end
 
       response WechatMP.Api.Model.SNSUser
@@ -497,7 +497,7 @@ defmodule WechatMP.Api do
       path "cgi-bin/ticket/getticket"
       args do
         required :access_token
-        required :type, enum(["jsapi", "wx_card"])
+        required :type, enum("jsapi", "wx_card")
       end
       resposne WechatMP.Api.Model.Ticket
     end
