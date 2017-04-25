@@ -112,5 +112,11 @@ defmodule WechatMP.Api.Model.CustomMessageBody do
   }
   """
 
+  def init(_), do: []
+
+  def embed(conn, body, opts) do
+    {:ok, conn}
+  end
+
   # TODO implement this
 end

@@ -231,7 +231,7 @@ defmodule WechatMP.Api do
       body :json do
         field :template_id, required(:string)
       end
-      resposne :ok
+      response :ok
     end
   end
 
@@ -499,7 +499,7 @@ defmodule WechatMP.Api do
         required :access_token
         required :type, enum("jsapi", "wx_card")
       end
-      resposne WechatMP.Api.Model.Ticket
+      response WechatMP.Api.Model.Ticket
     end
   end
 end

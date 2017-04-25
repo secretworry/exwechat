@@ -30,5 +30,9 @@ defmodule WechatMP.Api.Model.Material do
 
   @behaviour WechatBase.Api.Model.Response
 
-  # TODO implement this
+  # TODO impement this
+
+  def init(_), do: []
+
+  def parse(conn, opts), do: {:ok, conn.resp_body}
 end

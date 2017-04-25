@@ -5,6 +5,7 @@ defmodule WechatBase.Api.Notation.Endpoint do
   alias WechatBase.Api.Endpoint
 
   alias WechatBase.Api.Notation.Endpoint.BodyType.{Json, Form}
+  alias WechatBase.Api.Notation.Endpoint.ResponseType.{Constant, File}
 
   defmacro path(path) do
     record_path(__CALLER__, path)
@@ -24,21 +25,36 @@ defmodule WechatBase.Api.Notation.Endpoint do
     Scope.put_attr(env.module, :args, args)
   end
 
-  defmacro body({handler, opts}) do
-    record_body_handler(__CALLER__, Macro.expand(handler, __CALLER__), opts)
-  end
-
   defmacro body(handler) do
     record_body_handler(__CALLER__, Macro.expand(handler, __CALLER__), nil)
   end
 
-  defp record_body_handler(env, handler, opts) do
-    opts = handler.init(opts)
-    Scope.put_attr(env.module, :body_type, {handler, opts})
-  end
-
   defmacro body(type, [do: block]) do
     record_body_block(__CALLER__, type, [], block)
+  end
+
+  defmacro body(handler, opts) do
+    record_body_handler(__CALLER__, Macro.expand(handler, __CALLER__), Macro.expand(opts, __CALLER__))
+  end
+
+  defp record_body_handler(env, handler, opts) when is_atom(handler) do
+    case Atom.to_char_list(handler) do
+      'Elixir.' ++ _ ->
+        opts = handler.init(opts)
+        {handler, opts}
+      _is_atom ->
+        case handler do
+          :json ->
+            Json.eval(env, [], nil)
+          :form ->
+            Form.eval(env, [], nil)
+          :file ->
+            {WechatBase.Api.Endpoint.BodyType.File, WechatBase.Api.Endpoint.BodyType.File.init(nil)}
+          illegal_type ->
+            raise ArgumentError, "Unrecognizable body type #{inspect illegal_type}"
+        end
+    end
+    Scope.put_attr(env.module, :body_type, {handler, opts})
   end
 
   defp record_body_block(env, type, args, block) do
@@ -55,13 +71,30 @@ defmodule WechatBase.Api.Notation.Endpoint do
     record_body_handler(env, handler, opts)
   end
 
-  defmacro response(handler) do
-    record_response_handler(__CALLER__, Macro.expand(handler, __CALLER__), [])
+  defmacro response(handler_or_value) do
+    record_response_handler(__CALLER__, Macro.expand(handler_or_value, __CALLER__), [])
   end
 
-  defp record_response_handler(env, handler, args) do
-    opts = handler.init(args)
-    Scope.put_attr(env.module, :response_type, {handler, opts})
+  defp record_response_handler(env, handler, args) when is_atom(handler) do
+    response_type = case Atom.to_char_list(handler) do
+      'Elixir.' ++ _ ->
+        opts = handler.init(args)
+        {handler, opts}
+      _is_atom ->
+        case handler do
+          :ok ->
+            {Constant, :ok}
+          :file ->
+            {File, []}
+          atom ->
+            raise ArgumentError, "Cannot recognize response type #{inspect atom}"
+        end
+    end
+    Scope.put_attr(env.module, :response_type, response_type)
+  end
+
+  defp record_response_handler(env, value, _args) do
+    raise ArgumentError, "Cannot recognize response type #{inspect value}"
   end
 
   def build(module) do

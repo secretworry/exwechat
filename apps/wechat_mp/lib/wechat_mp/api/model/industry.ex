@@ -1,4 +1,4 @@
-defmodule Wechat.Api.Model.Industry do
+defmodule WechatMP.Api.Model.Industry do
 
   use WechatBase.Api.Model.JsonResponse
 

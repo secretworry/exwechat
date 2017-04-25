@@ -65,4 +65,10 @@ defmodule WechatMP.Api.Model.MassiveMessageBody do
   """
   # TODO implement this
 
+  def init(_), do: []
+
+  def embed(conn, body, opts) do
+    {:ok, conn}
+  end
+
 end

@@ -12,8 +12,7 @@ defmodule WechatBase.Api.Notation do
     block |> expand(env)
 
     close_scope(kind, env, identifier)
-
-    Scope.recorded!(env.module, kind, identifier)
+    nil
   end
 
   def get_definitions(module) do
