@@ -1,4 +1,4 @@
-defmodule WechatBase.Api.Model.JSONResponse.Schema do
+defmodule WechatBase.Api.Model.JsonResponse.Schema do
 
   @type id_t :: String.t | atom
 

@@ -1,4 +1,4 @@
-defmodule WechatBase.Api.Model.JSONResponse do
+defmodule WechatBase.Api.Model.JsonResponse do
 
   defmacro __using__(_args) do
     quote do
@@ -119,7 +119,7 @@ defmodule WechatBase.Api.Model.JSONResponse do
 
       def parse(conn, _) do
         schema = __schema__()
-        WechatBase.Api.Model.JSONResponse.Schema.convert(schema, conn.resp_body, %__MODULE__{})
+        WechatBase.Api.Model.JsonResponse.Schema.convert(schema, conn.resp_body, %__MODULE__{})
       end
     end
   end

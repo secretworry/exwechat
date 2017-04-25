@@ -1,6 +1,6 @@
 defmodule WechatMP.Api.Model.MassiveMessage do
 
-  use WechatBase.Api.Model.JSONResponse
+  use WechatBase.Api.Model.JsonResponse
 
   model do
     field :errcode

@@ -120,7 +120,7 @@ defmodule WechatBase.Api.Endpoint do
         conn = %{conn | resp_body: json}
         do_process_json_response(conn, endpoint)
       {:error, _} ->
-        {:error, Error.new(:illegal_json, "Illegal JSON response %{content}", %{content: body})}
+        {:error, Error.new(:illegal_json, "Illegal Json response %{content}", %{content: body})}
     end
   end
 

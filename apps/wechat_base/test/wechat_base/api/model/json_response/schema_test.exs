@@ -1,8 +1,8 @@
-defmodule WechatBase.Api.Model.JSONResponse.SchemaTest do
+defmodule WechatBase.Api.Model.JsonResponse.SchemaTest do
 
   use ExUnit.Case
 
-  alias WechatBase.Api.Model.JSONResponse.Schema
+  alias WechatBase.Api.Model.JsonResponse.Schema
 
   describe "convert/3" do
     test "should convert nil" do

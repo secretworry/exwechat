@@ -1,7 +1,7 @@
 defmodule WechatMP.Api.Model.ContactList do
   @moduledoc false
 
-  use WechatBase.Api.Model.JSONResponse
+  use WechatBase.Api.Model.JsonResponse
 
   model do
     array :kf_list do

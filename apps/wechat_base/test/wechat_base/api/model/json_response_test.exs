@@ -1,11 +1,11 @@
-defmodule WechatBase.Api.Model.JSONResponseTest do
+defmodule WechatBase.Api.Model.JsonResponseTest do
 
   use WechatBase.Case
 
   alias Maxwell.Conn
 
   defmodule SimpleJsonResponse do
-    use WechatBase.Api.Model.JSONResponse
+    use WechatBase.Api.Model.JsonResponse
 
     model do
       field :key

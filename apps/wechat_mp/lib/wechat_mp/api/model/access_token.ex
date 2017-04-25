@@ -1,6 +1,6 @@
 defmodule WechatMP.Api.Model.AccessToken do
 
-  use WechatBase.Api.Model.JSONResponse
+  use WechatBase.Api.Model.JsonResponse
 
   model do
     field :access_token

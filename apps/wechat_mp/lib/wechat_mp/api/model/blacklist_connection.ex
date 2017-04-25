@@ -1,6 +1,6 @@
 defmodule WechatMP.Api.Model.BlacklistConnection do
 
-  use WechatBase.Api.Model.JSONResponse
+  use WechatBase.Api.Model.JsonResponse
 
   model do
     field :total

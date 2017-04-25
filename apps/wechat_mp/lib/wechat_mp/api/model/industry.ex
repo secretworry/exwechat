@@ -1,6 +1,6 @@
 defmodule Wechat.Api.Model.Industry do
 
-  use WechatBase.Api.Model.JSONResponse
+  use WechatBase.Api.Model.JsonResponse
 
   model do
     field :primary_industry do
