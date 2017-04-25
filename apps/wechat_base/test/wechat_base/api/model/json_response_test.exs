@@ -37,13 +37,13 @@ defmodule WechatBase.Api.Model.JsonResponseTest do
       conn = Conn.new("http://example.com/")
       conn = %{conn | resp_body: %{"key" => "value", "nested" => %{"key" => "value"}, "array" => [1, 2, 3]}}
       assert SimpleJsonResponse.parse(conn, opts)
-          == %SimpleJsonResponse{
+          == {:ok, %SimpleJsonResponse{
             key: "value",
             nested: %{
               key: "value"
             },
             array: [1, 2, 3]
-          }
+          }}
     end
   end
 end

@@ -119,7 +119,7 @@ defmodule WechatBase.Api.Model.JsonResponse do
 
       def parse(conn, _) do
         schema = __schema__()
-        WechatBase.Api.Model.JsonResponse.Schema.convert(schema, conn.resp_body, %__MODULE__{})
+        {:ok, WechatBase.Api.Model.JsonResponse.Schema.convert(schema, conn.resp_body, %__MODULE__{})}
       end
     end
   end
