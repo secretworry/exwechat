@@ -6,13 +6,13 @@ defmodule WechatBase.Api.Model.JsonResponse.SchemaTest do
 
   describe "convert/3" do
     test "should convert nil" do
-      schema = [{:string, nil}, {:integer, nil}, {:float, nil}]
+      schema = [{:string, [], nil}, {:integer, [], nil}, {:float, [], nil}]
       assert Schema.convert(schema, nil, %{}) == %{}
       assert Schema.convert(schema, %{"string" => nil}, %{}) == %{}
     end
 
     test "should convert a json" do
-      schema = [{:string, nil}, {:integer, nil}, {:float, nil}]
+      schema = [{:string, [], nil}, {:integer, [], nil}, {:float, [], nil}]
       assert Schema.convert(schema, %{
         "string" => "string",
         "integer" => 5,
@@ -25,7 +25,7 @@ defmodule WechatBase.Api.Model.JsonResponse.SchemaTest do
     end
 
     test "should convert a nested schema" do
-      schema = [{:object, [{:key, nil}, {:value, nil}]}]
+      schema = [{:object, [], [{:key, [], nil}, {:value, [], nil}]}]
       assert Schema.convert(schema, %{
         "object" => %{
           "key" => "key",
@@ -59,7 +59,7 @@ defmodule WechatBase.Api.Model.JsonResponse.SchemaTest do
     end
 
     test "should keep value untouched when not specified" do
-      schema = [{:object, nil}]
+      schema = [{:object, [], nil}]
       assert Schema.convert(schema, %{
         "object" => %{
           "key" => "value"
@@ -68,6 +68,15 @@ defmodule WechatBase.Api.Model.JsonResponse.SchemaTest do
         object: %{
           "key" => "value"
         }
+      }
+    end
+
+    test "should convert to name specified with option as" do
+      schema = [{:obj, [as: :object], nil}]
+      assert Schema.convert(schema, %{
+        "obj" => "value"
+      }, %{}) == %{
+        object: "value"
       }
     end
   end

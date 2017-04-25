@@ -21,13 +21,11 @@ defmodule WechatBase.Api.Model.JsonResponseTest do
     test "should define a schema" do
 
       assert SimpleJsonResponse.__schema__()
-          == [
-            {:key, nil},
-            {:nested, [
-              {:key, nil}
-            ]},
-            {:array, nil}
-          ]
+          == [{:key, [], nil},
+              {:nested, [], [
+                {:key, [], nil}
+              ]},
+              {:array, [], nil}]
     end
   end
 
@@ -35,14 +33,16 @@ defmodule WechatBase.Api.Model.JsonResponseTest do
     test "should parse a json response" do
       opts = SimpleJsonResponse.init(nil)
       conn = Conn.new("http://example.com/")
-      conn = %{conn | resp_body: %{"key" => "value", "nested" => %{"key" => "value"}, "array" => [1, 2, 3]}}
+      body = %{"key" => "value", "nested" => %{"key" => "value"}, "array" => [1, 2, 3]}
+      conn = %{conn | resp_body: body}
       assert SimpleJsonResponse.parse(conn, opts)
           == {:ok, %SimpleJsonResponse{
             key: "value",
             nested: %{
               key: "value"
             },
-            array: [1, 2, 3]
+            array: [1, 2, 3],
+            __origin__: body
           }}
     end
   end

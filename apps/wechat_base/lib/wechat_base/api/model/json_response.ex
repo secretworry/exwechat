@@ -1,5 +1,7 @@
 defmodule WechatBase.Api.Model.JsonResponse do
 
+  alias WechatBase.Api.Model.JsonResponse.Schema
+
   defmacro __using__(_args) do
     quote do
       @behaviour WechatBase.Api.Endpoint.ResponseType
@@ -22,24 +24,31 @@ defmodule WechatBase.Api.Model.JsonResponse do
     @stack :__exwechat_json_response__
 
     defmacro field(name) do
-      record_field(__CALLER__, name, nil)
+      record_field(__CALLER__, name, [], nil)
     end
 
     defmacro field(name, [do: block]) do
-      record_field(__CALLER__, name, block)
+      record_field(__CALLER__, name, [], block)
+    end
+
+    defmacro field(name, args, [do: block]) do
+      record_field(__CALLER__, name, Macro.expand(args, __CALLER__), block)
     end
 
     defmacro array(name) do
-      record_field(__CALLER__, name, nil)
+      record_field(__CALLER__, name, [], nil)
     end
 
     defmacro array(name, [do: block]) do
-      record_field(__CALLER__, name, block)
+      record_field(__CALLER__, name, [], block)
+    end
+    defmacro array(name, args, [do: block]) do
+      record_field(__CALLER__, name, Macro.expand(args, __CALLER__), block)
     end
 
-    defp record_field(env, name, block) do
+    defp record_field(env, name, args, block) do
       children = expand_block(env, block)
-      put_record(env.module, {name, children})
+      put_record(env.module, {name, args, children})
     end
 
     def expand_block(_env, nil), do: nil
@@ -109,19 +118,20 @@ defmodule WechatBase.Api.Model.JsonResponse do
   defmacro __before_compile__(env) do
     schema = Module.get_attribute(env.module, @schema) || []
     fields = Enum.map(schema, fn
-      {name, _} ->
-        {name, nil}
-    end)
-    quote do
-      def __schema__(), do: unquote(schema)
+      node ->
+        {Schema.node_name(node), nil}
+    end) ++ [{:__origin__, nil}]
+    code = quote do
+      def __schema__(), do: unquote(schema |> Macro.escape)
 
       defstruct unquote(fields)
 
       def parse(conn, _) do
         schema = __schema__()
-        {:ok, WechatBase.Api.Model.JsonResponse.Schema.convert(schema, conn.resp_body, %__MODULE__{})}
+        {:ok, WechatBase.Api.Model.JsonResponse.Schema.convert(schema, conn.resp_body, %__MODULE__{__origin__: conn.resp_body})}
       end
     end
+    code
   end
 
   defp eval_model(env, block) do
