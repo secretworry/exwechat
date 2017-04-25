@@ -6,7 +6,7 @@ defmodule WechatMP.Api.Model.BlacklistConnection do
     field :total
     field :count
     field :data do
-      list :openid
+      array :openid
       field :next_openid
     end
   end

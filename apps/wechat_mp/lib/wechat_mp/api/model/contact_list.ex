@@ -4,7 +4,7 @@ defmodule WechatMP.Api.Model.ContactList do
   use WechatBase.Api.Model.JSONResponse
 
   model do
-    list :kf_list do
+    array :kf_list do
       field :kf_account
       field :kf_nick
       field :kf_id
