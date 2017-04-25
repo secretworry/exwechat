@@ -43,11 +43,19 @@ defmodule WechatBase.Api.Notation.Endpoint.BodyType.JsonTest do
           field :key, :string
           field :value, :string
         end
+        field :array_field, required(:array) do
+          field :key, :string
+          field :value, :string
+        end
       end
     end
 
     assert NestedSchema.json(:nested) == {Json, [
       {:object, :object_field, %{}, [
+        {:string, :key, %{}, []},
+        {:string, :value, %{}, []}
+      ]},
+      {{:array, :object}, :array_field, %{required?: true}, [
         {:string, :key, %{}, []},
         {:string, :value, %{}, []}
       ]}

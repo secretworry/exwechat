@@ -84,7 +84,7 @@ defmodule WechatBase.Api.Notation.Endpoint.BodyType.Json do
         {node, {[:array | types], opts}}
       type, {types, opts} when type in [:string, :integer, :float, :object]->
         {type, {[type | types], opts}}
-      container_type, {types, opts} when container_type in [:arrya, :map] ->
+      container_type, {types, opts} when container_type in [:array, :map] ->
         {container_type, {[container_type | types], opts}}
       node, acc ->
         {node, acc}

@@ -31,6 +31,10 @@ defmodule WechatBase.Api.Model.JsonResponse do
       record_field(__CALLER__, name, [], block)
     end
 
+    defmacro field(name, args) do
+      record_field(__CALLER__, name, args, nil)
+    end
+
     defmacro field(name, args, [do: block]) do
       record_field(__CALLER__, name, Macro.expand(args, __CALLER__), block)
     end
@@ -44,6 +48,10 @@ defmodule WechatBase.Api.Model.JsonResponse do
     end
     defmacro array(name, args, [do: block]) do
       record_field(__CALLER__, name, Macro.expand(args, __CALLER__), block)
+    end
+
+    defmacro array(name, args) do
+      record_field(__CALLER__, name, args, nil)
     end
 
     defp record_field(env, name, args, block) do
